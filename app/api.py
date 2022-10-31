@@ -4,8 +4,10 @@ from open_ai_integration import (
     generate_branding_snippet,
     generate_keywords,
 )
+from mangum import Mangum
 
 app = FastAPI()
+handler = Mangum(app)
 MAX_INPUT_LENGTH = 32
 
 
