@@ -15,18 +15,37 @@ const Form: React.FC<FormProps> = (props) => {
         }
     }
 
+    let statusColor = "text-slate-500";
+    let statusText = null;
+    if (!isPromptValid) {
+        statusColor = "text-red-400"
+        statusText = `Input must be less than ${props.characterLimit} characters`
+    }
+
+    const gradientTextStyle =
+        "text-white text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500 font-light w-fit mx-auto";
+
+
     return <>
-        <p>
-            Tell me what your brand is about and I will generate copy and keywords
-            for you.
-        </p>
+        <div className="mb-6 text-slate-400">
+            <p>
+                Tell me what your brand is about and I will generate copy and keywords
+                for you.
+            </p>
+        </div>
         <input
+            className="p-2 w-full rounded-md focus:outline-teal-400  text-slate-700"
             type="text"
             placeholder="coffee"
             value={props.prompt}
             onChange={(e) => updatePromptValue(e.currentTarget.value)} />
-        <div>{props.prompt.length}/{props.characterLimit}</div>
+        <div className={statusColor + " flex justify-between my-2 mb-6 text-sm"}>
+            <div>{statusText}</div>
+            <div>{props.prompt.length}/{props.characterLimit}</div>
+        </div>
         <button
+            className="bg-gradient-to-r from-teal-400 
+            to-blue-500 disabled:opacity-50 w-full p-2 rounded-md text-lg text-white"
             onClick={props.onSubmit}
             disabled={props.isLoading || !isPromptValid}
         >
