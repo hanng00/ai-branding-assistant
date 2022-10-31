@@ -2,6 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as lambda from "aws-cdk-lib/aws-lambda"
 import * as dotenv from "dotenv";
+import * as apiGateway from "aws-cdk-lib/aws-apigateway";
 
 dotenv.config()
 
@@ -24,6 +25,14 @@ export class InfrastructureStack extends cdk.Stack {
       environment: {
         OPENAI_API_KEY: process.env.OPENAI_API_KEY ?? "",
       }
+    });
+
+    const brandAiAPI = new apiGateway.RestApi(this, "RestApi", {
+      restApiName: "Brand API",
+    });
+
+    brandAiAPI.root.addProxy({
+      defaultIntegration: new apiGateway.LambdaIntegration(apiLambda)
     })
   }
 }
